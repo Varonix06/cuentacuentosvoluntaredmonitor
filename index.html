@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lila y el parque de primavera</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Comic Sans MS', 'Trebuchet MS', Arial, sans-serif;
+      background: linear-gradient(180deg, #b7ecff 0%, #f9ffd8 55%, #b8f0b0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: #31422b;
+    }
+
+    .app {
+      width: min(980px, 96vw);
+      background: #fffaf0;
+      border: 8px solid #ffb347;
+      border-radius: 28px;
+      box-shadow: 0 18px 45px rgba(0,0,0,.18);
+      overflow: hidden;
+      position: relative;
+    }
+
+    header {
+      background: linear-gradient(90deg, #ff7a7a, #ffd166, #8ee070);
+      padding: 18px 24px;
+      text-align: center;
+      border-bottom: 5px solid #ffb347;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 52px);
+      color: #ffffff;
+      text-shadow: 3px 3px 0 #d85f2d;
+      letter-spacing: 1px;
+    }
+
+    .book {
+      min-height: 560px;
+      padding: 28px;
+      position: relative;
+    }
+
+    .page {
+      display: none;
+      animation: appear .35s ease;
+    }
+
+    .page.active { display: grid; grid-template-columns: 1.05fr .95fr; gap: 24px; align-items: center; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .text {
+      background: #ffffff;
+      border: 4px dashed #7bc96f;
+      border-radius: 22px;
+      padding: 24px;
+      font-size: clamp(18px, 2.2vw, 25px);
+      line-height: 1.48;
+      box-shadow: inset 0 0 0 6px #f2ffe8;
+    }
+
+    .text h2 {
+      margin-top: 0;
+      color: #ff6b35;
+      font-size: clamp(25px, 3vw, 36px);
+    }
+
+    .scene {
+      min-height: 390px;
+      border-radius: 26px;
+      background: linear-gradient(#aee7ff 0 48%, #8ee070 48% 100%);
+      border: 5px solid #5eb85b;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 -15px 0 rgba(0,0,0,.04);
+    }
+
+    .sun {
+      width: 82px; height: 82px; border-radius: 50%; background: #ffd166;
+      position: absolute; top: 30px; right: 35px; box-shadow: 0 0 0 12px rgba(255,209,102,.35);
+    }
+
+    .cloud { position: absolute; background: #fff; border-radius: 999px; opacity: .92; }
+    .cloud:before, .cloud:after { content:""; position:absolute; background:#fff; border-radius:50%; }
+    .cloud.one { width: 130px; height: 38px; top: 55px; left: 35px; }
+    .cloud.one:before { width: 55px; height: 55px; left: 20px; top: -22px; }
+    .cloud.one:after { width: 70px; height: 70px; left: 55px; top: -34px; }
+    .cloud.two { width: 95px; height: 30px; top: 130px; right: 70px; }
+    .cloud.two:before { width: 45px; height: 45px; left: 12px; top: -18px; }
+    .cloud.two:after { width: 55px; height: 55px; left: 42px; top: -25px; }
+
+    .hill { position: absolute; bottom: 0; width: 100%; height: 145px; background: #6fcf63; border-top-left-radius: 55% 40%; border-top-right-radius: 45% 35%; }
+    .river { position:absolute; bottom: 0; left: 35%; width: 120px; height: 190px; background: #46b7e8; transform: skewX(-15deg); border-radius: 60px 60px 0 0; opacity: .9; }
+    .tree { position:absolute; bottom: 100px; left: 40px; width: 28px; height: 90px; background:#8b5a2b; border-radius: 10px; }
+    .tree:before { content:""; position:absolute; width: 105px; height:105px; background:#2fb344; border-radius:50%; left:-38px; top:-65px; box-shadow: 42px 8px 0 #39c957, 18px -28px 0 #57d46b; }
+    .tree.small { left:auto; right:38px; bottom:95px; transform:scale(.75); }
+
+    .flower { position:absolute; width: 16px; height: 16px; background:#ff6b9d; border-radius:50%; bottom: 105px; left: 180px; box-shadow: 22px 15px 0 #ffd166, 47px -5px 0 #8a6cff, 80px 10px 0 #ff6b9d, 120px -8px 0 #ffd166; }
+
+    .butterfly { position:absolute; left: 48%; top: 125px; width: 34px; height: 42px; background:#4b3b75; border-radius:50%; transform: rotate(-8deg); }
+    .butterfly:before, .butterfly:after { content:""; position:absolute; width:70px; height:85px; background:#ff8cc6; border:5px solid #7b4fd6; top:-15px; border-radius:70% 40% 70% 40%; }
+    .butterfly:before { right: 18px; transform: rotate(-20deg); }
+    .butterfly:after { left: 18px; transform: rotate(20deg) scaleX(-1); }
+    .butterfly .face { position:absolute; left:9px; top:6px; width:7px; height:7px; background:#fff; border-radius:50%; z-index:2; box-shadow:11px 0 0 #fff; }
+
+    .cat { position:absolute; bottom:100px; right:130px; font-size:90px; }
+    .ball { position:absolute; bottom: 110px; left: 120px; width: 56px; height:56px; border-radius:50%; background: radial-gradient(circle at 35% 35%, #fff 0 12%, #ff6b35 13% 100%); border:4px solid #d9531e; }
+    .chair { position:absolute; bottom: 95px; left: 235px; font-size:78px; }
+    .book-emoji { position:absolute; bottom: 90px; right: 85px; font-size:74px; }
+    .lamp { position:absolute; bottom: 155px; left: 80px; font-size:65px; }
+    .cup { position:absolute; bottom: 105px; left: 315px; font-size:70px; }
+    .clock { position:absolute; top: 110px; left: 230px; font-size:66px; }
+    .grandpa { position:absolute; bottom: 95px; right: 210px; font-size:78px; }
+    .phone { position:absolute; top: 160px; right: 190px; font-size:62px; }
+    .mountain { position:absolute; bottom: 120px; left: 50%; font-size:95px; }
+    .guitar { position:absolute; bottom: 105px; left: 70px; font-size:75px; }
+    .bottle { position:absolute; bottom: 105px; right: 85px; font-size:70px; }
+
+    .controls {
+      display:flex; align-items:center; justify-content:space-between; gap: 16px;
+      padding: 18px 24px 24px;
+      background: #fff1c8;
+      border-top: 5px solid #ffb347;
+    }
+
+    button {
+      border: none;
+      background: #ff6b35;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 800;
+      padding: 12px 22px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #c94920;
+    }
+
+    button:disabled { opacity:.45; cursor:not-allowed; }
+    .counter { font-size: 20px; font-weight: 800; color:#3d7a35; }
+
+    .wordlist {
+      margin-top: 12px;
+      font-size: 16px;
+      background: #f1ffe9;
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: #48603e;
+    }
+
+    @media (max-width: 760px) {
+      .page.active { grid-template-columns: 1fr; }
+      .scene { min-height: 300px; }
+      .book { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header><h1>Lila y el parque de primavera</h1></header>
+    <section class="book">
+      <article class="page active">
+        <div class="text">
+          <h2>Página 1</h2>
+          <p>Había una vez una mariposa llamada Lila que vivía en un parque lleno de flores, justo al empezar la primavera.</p>
+          <p>Lila era muy curiosa, pero también un poco despistada. Siempre iba volando de un lado a otro sin fijarse demasiado en los demás.</p>
+          <div class="wordlist">Valor principal: ayudar y cuidar a los demás.</div>
+        </div>
+        <div class="scene"><div class="sun"></div><div class="cloud one"></div><div class="hill"></div><div class="tree"></div><div class="flower"></div><div class="butterfly"><span class="face"></span></div></div>
+      </article>
+
+      <article class="page">
+        <div class="text">
+          <h2>Página 2</h2>
+          <p>Una mañana encontró una <strong>silla</strong> pequeña debajo de un árbol. Encima había un <strong>libro</strong> abierto y una <strong>taza</strong> azul.</p>
+          <p>Al lado sonaba un viejo <strong>reloj</strong>, y un <strong>teléfono</strong> perdido no paraba de vibrar.</p>
+        </div>
+        <div class="scene"><div class="cloud one"></div><div class="hill"></div><div class="tree"></div><div class="chair">🪑</div><div class="book-emoji">📖</div><div class="cup">☕</div><div class="clock">⏰</div><div class="phone">📱</div></div>
+      </article>
+
+      <article class="page">
+        <div class="text">
+          <h2>Página 3</h2>
+          <p>Lila pensó que todo aquello sería de alguien. Entonces apareció Tom, un <strong>gato</strong> pequeño que buscaba una <strong>pelota</strong>.</p>
+          <p>Tom estaba triste porque no encontraba sus cosas y tenía miedo de que nadie le ayudara.</p>
+        </div>
+        <div class="scene"><div class="sun"></div><div class="cloud two"></div><div class="hill"></div><div class="cat">🐱</div><div class="ball"></div><div class="butterfly"><span class="face"></span></div></div>
+      </article>
+
+      <article class="page">
+        <div class="text">
+          <h2>Página 4</h2>
+          <p>Lila decidió ayudarle. Primero miraron junto al <strong>río</strong>, después cerca de una <strong>montaña</strong> de hojas secas y más tarde al lado de una <strong>lámpara</strong> del parque.</p>
+          <p>También encontraron una <strong>botella</strong> tirada en el suelo, y Lila dijo que había que llevarla al contenedor.</p>
+        </div>
+        <div class="scene"><div class="sun"></div><div class="hill"></div><div class="river"></div><div class="mountain">⛰️</div><div class="lamp">💡</div><div class="bottle">🍼</div><div class="butterfly"><span class="face"></span></div></div>
+      </article>
+
+      <article class="page">
+        <div class="text">
+          <h2>Página 5</h2>
+          <p>Mientras buscaban, escucharon una <strong>guitarra</strong>. Era el <strong>abuelo</strong> Búho, que tocaba canciones para los animales del parque.</p>
+          <p>El abuelo les dijo: “Cuando ayudamos a alguien, el parque se vuelve un sitio mejor para todos”.</p>
+        </div>
+        <div class="scene"><div class="cloud one"></div><div class="hill"></div><div class="tree"></div><div class="grandpa">🦉</div><div class="guitar">🎸</div><div class="butterfly"><span class="face"></span></div></div>
+      </article>
+
+      <article class="page">
+        <div class="text">
+          <h2>Página 6</h2>
+          <p>Al final, la pelota estaba detrás de unas flores. Tom se puso muy contento y le dio las gracias a Lila.</p>
+          <p>Desde ese día, Lila entendió que ser amable no cuesta mucho, pero puede hacer que otra persona se sienta mucho mejor.</p>
+          <p><strong>Moraleja:</strong> ayudar a los demás y cuidar el entorno hace que todos vivamos mejor.</p>
+        </div>
+        <div class="scene"><div class="sun"></div><div class="cloud one"></div><div class="cloud two"></div><div class="hill"></div><div class="tree"></div><div class="tree small"></div><div class="flower"></div><div class="cat">🐱</div><div class="ball"></div><div class="butterfly"><span class="face"></span></div></div>
+      </article>
+    </section>
+    <div class="controls">
+      <button id="prev">← Anterior</button>
+      <div class="counter"><span id="current">1</span> / <span id="total">6</span></div>
+      <button id="next">Siguiente →</button>
+    </div>
+  </main>
+
+  <script>
+    const pages = Array.from(document.querySelectorAll('.page'));
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    const current = document.getElementById('current');
+    const total = document.getElementById('total');
+    let index = 0;
+    total.textContent = pages.length;
+
+    function showPage() {
+      pages.forEach((page, i) => page.classList.toggle('active', i === index));
+      current.textContent = index + 1;
+      prev.disabled = index === 0;
+      next.disabled = index === pages.length - 1;
+    }
+
+    prev.addEventListener('click', () => { if (index > 0) { index--; showPage(); } });
+    next.addEventListener('click', () => { if (index < pages.length - 1) { index++; showPage(); } });
+    showPage();
+  </script>
+</body>
+</html>
